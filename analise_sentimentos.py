@@ -1,7 +1,9 @@
 import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
+import seaborn as sns
 
+sns.set_style("whitegrid")
 
 def show(df):
     st.title("Análise de Sentimentos")
@@ -9,8 +11,8 @@ def show(df):
     st.write("""
     Explore a distribuição e tendências dos sentimentos em comentários no Facebook.
     """)
-    
-    # Descrição dos sentimentos
+
+    # Entendendo os Sentimentos
     st.write("""
     ### Entendendo os Sentimentos:
     
@@ -23,12 +25,8 @@ def show(df):
     Estes sentimentos são inferidos automaticamente pela API do Facebook com base no conteúdo dos comentários.
     """)
 
-    # Espaçamento para melhor layout
-    st.write('\n')
-    
     # Big Numbers
     st.header("Visão Geral")
-    
     col1, col2, col3 = st.columns(3)
     
     with col1:
@@ -42,53 +40,56 @@ def show(df):
     with col3:
         st.markdown("**Negativo**")
         st.markdown(f"<h1 style='text-align: center; color: red;'>{len(df[df['sentimento'] == 'negativo'])}</h1>", unsafe_allow_html=True)
-    
-    # Espaçamento
-    st.write('\n\n')
-    
-    # Gráficos (Aqui você pode adicionar gráficos para visualizar distribuição, tendências, etc.)
+
     st.header("Detalhes dos Sentimentos")
 
     # Gráficos de barra mostrando a distribuição dos sentimentos
     st.subheader("Distribuição dos Sentimentos")
-    sentiments = ['positivo', 'neutro', 'negativo']
-    sentiment_counts = [len(df[df['sentimento'] == sentiment]) for sentiment in sentiments]
-    
-    fig, ax = plt.subplots()
-    ax.bar(sentiments, sentiment_counts, color=['green', 'gray', 'red'])
-    ax.set_ylabel('Quantidade')
-    ax.set_title('Quantidade de Comentários por Sentimento')
-    st.pyplot(fig)
-    
-    # Gráfico de linha mostrando a evolução dos sentimentos ao longo do tempo
-    st.subheader("Evolução dos Sentimentos ao Longo do Tempo")
+    sentiments = df['sentimento'].value_counts()
+    plt.figure(figsize=(10, 6))
+    sns.barplot(sentiments.index, sentiments.values, palette=["red", "gray", "green"])
+    plt.title('Distribuição dos Sentimentos')
+    plt.ylabel('Quantidade de Comentários')
+    st.pyplot(plt.gcf())
+    plt.clf()
+
+    # Evolução dos sentimentos ao longo do tempo
     df['data_comentario'] = pd.to_datetime(df['data_comentario'])
     sentiment_over_time = df.groupby([df['data_comentario'].dt.date, 'sentimento']).size().unstack().fillna(0)
     
-    fig, ax = plt.subplots()
+    fig, ax = plt.subplots(figsize=(10, 6))
     sentiment_over_time.plot(ax=ax, color=['green', 'gray', 'red'])
     ax.set_ylabel('Quantidade')
     ax.set_title('Evolução dos Sentimentos ao Longo do Tempo')
     st.pyplot(fig)
 
-    
-    # Por exemplo: Gráfico de barras para visualizar a quantidade de sentimentos ao longo do tempo
-    # (Isso é apenas um esboço. Você precisa implementar o código real para criar o gráfico.)
-    st.subheader("Distribuição de sentimentos ao longo do tempo")
-    st.write("Aqui você pode inserir um gráfico mostrando como os sentimentos evoluíram ao longo do tempo.")
-    
-    # Espaçamento
-    st.write('\n')
-    
-    # Feedback do usuário ou insights
-    st.header("Insights")
-    st.info("Os comentários positivos têm uma média de curtidas mais alta em comparação com outros sentimentos.")
-    
-    # Outras análises ou gráficos podem ser adicionados conforme necessário
+    # Reações e curtidas por sentimento
+    st.subheader("Reações e Curtidas por Sentimento")
+    reactions_avg = df.groupby('sentimento')[['reacoes', 'curtidas']].mean()
+    reactions_avg.plot(kind='bar', figsize=(10, 6), color=['blue', 'yellow'])
+    plt.title('Reações e Curtidas por Sentimento')
+    plt.ylabel('Média de Reações/Curtidas')
+    st.pyplot(plt.gcf())
+    plt.clf()
+
+    # Distribuição de postagens por tipo
+    st.subheader("Distribuição de Postagens por Tipo")
+    post_type_counts = df['tipo_postagem'].value_counts()
+    plt.figure(figsize=(10, 6))
+    sns.barplot(post_type_counts.index, post_type_counts.values, palette="viridis")
+    plt.title('Distribuição de Postagens por Tipo')
+    plt.ylabel('Número de Postagens')
+    st.pyplot(plt.gcf())
+    plt.clf()
+
+    # Top postagens
+    st.subheader("Top 5 postagens por curtidas")
+    top_posts = df.sort_values(by='curtidas', ascending=False).head(5)
+    for _, row in top_posts.iterrows():
+        st.write(f"**Postagem**: {row['postagem']} | **Curtidas**: {row['curtidas']} | **Compartilhamentos**: {row['compartilhamentos']} | **Visualizações**: {row['visualizacoes']}")
 
     # Final do dashboard com um call-to-action ou uma nota.
     st.write("""
     ### Obrigado por explorar a análise de sentimentos!
     Mantenha-se atualizado e tome decisões baseadas em dados.
     """)
-
