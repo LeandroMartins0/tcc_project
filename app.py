@@ -13,8 +13,8 @@ menu = st.sidebar.selectbox(
 if menu == "Análise de Sentimentos":
     analise_sentimentos.show(df)
 elif menu == "Análise de Engajamento":
-    print(teste)
+    print("teste")
     #analise_engajamento.show(df)
 elif menu == "Visualizações":
-    print(teste)
+    print("teste")
     #visualizacoes.show(df)
