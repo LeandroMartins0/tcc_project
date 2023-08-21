@@ -1,8 +1,5 @@
-# Importando as bibliotecas necessárias
 import streamlit as st
 import pandas as pd
-import matplotlib.pyplot as plt
-import seaborn as sns
 
 # Carregando os dados
 @st.cache
@@ -16,58 +13,41 @@ def load_data():
 df = load_data()
 
 # Título do Dashboard
-st.title("Dashboard de Análise de Sentimentos")
+st.title("Dashboard de Análise de Sentimentos no Facebook")
 
-# Introdução ou descrição
-st.write("""
-Realize análises detalhadas sobre os sentimentos dos comentários e entenda o comportamento do público!
-""")
+# Subtítulo
+st.subheader("Análise Descritiva dos Sentimentos")
 
-# Análise Descritiva dos Sentimentos
-st.header("Análise Descritiva dos Sentimentos")
-sent_count = df['sentimento'].value_counts()
-st.bar_chart(sent_count)
+# Calculando estatísticas
+pos_comments = len(df[df['sentimento'] == 'positivo'])
+neutro_comments = len(df[df['sentimento'] == 'neutro'])
+neg_comments = len(df[df['sentimento'] == 'negativo'])
 
-# Análise Temporal
-st.header("Análise Temporal")
-st.write("Distribuição de sentimentos ao longo do tempo:")
-df['data_comentario'] = pd.to_datetime(df['data_comentario'])
-fig, ax = plt.subplots()
-sns.lineplot(data=df, x='data_comentario', y='curtidas', hue='sentimento', ax=ax)
-st.pyplot(fig)
+avg_likes_pos = df[df['sentimento'] == 'positivo']['curtidas'].mean()
+avg_likes_neutro = df[df['sentimento'] == 'neutro']['curtidas'].mean()
+avg_likes_neg = df[df['sentimento'] == 'negativo']['curtidas'].mean()
 
-# Análise de Usuários
-st.header("Análise de Usuários")
-most_active_users = df['usuario_comentario_id'].value_counts().head(10)
-st.bar_chart(most_active_users)
+avg_views_pos = df[df['sentimento'] == 'positivo']['visualizacoes'].mean()
+avg_views_neutro = df[df['sentimento'] == 'neutro']['visualizacoes'].mean()
+avg_views_neg = df[df['sentimento'] == 'negativo']['visualizacoes'].mean()
 
-# Análise de Localização
-st.header("Análise de Localização")
-location_count = df['localizacao'].value_counts()
-st.bar_chart(location_count)
+# Exibindo Big Numbers
+col1, col2, col3 = st.beta_columns(3)
 
-# Análise por Tipo de Postagem
-st.header("Análise por Tipo de Postagem")
-post_type = df['tipo_postagem'].value_counts()
-st.bar_chart(post_type)
+with col1:
+    st.markdown("**Comentários Positivos**")
+    st.markdown(f"<h1 style='text-align: center; color: green;'>{pos_comments}</h1>", unsafe_allow_html=True)
+    st.markdown(f"Média de curtidas: {avg_likes_pos:.2f}")
+    st.markdown(f"Média de visualizações: {avg_views_pos:.2f}")
 
-# NLP (somente placeholder, você precisa adicionar o código real)
-st.header("Análise de Palavras-chave")
-st.write("Aqui você pode ver as palavras-chave mais frequentes para cada sentimento.")
+with col2:
+    st.markdown("**Comentários Neutros**")
+    st.markdown(f"<h1 style='text-align: center; color: gray;'>{neutro_comments}</h1>", unsafe_allow_html=True)
+    st.markdown(f"Média de curtidas: {avg_likes_neutro:.2f}")
+    st.markdown(f"Média de visualizações: {avg_views_neutro:.2f}")
 
-# Análise de Engajamento
-st.header("Análise de Engajamento")
-st.write("Relação entre compartilhamentos e sentimentos:")
-fig, ax = plt.subplots()
-sns.scatterplot(data=df, x='compartilhamentos', y='curtidas', hue='sentimento', ax=ax)
-st.pyplot(fig)
-
-# Visualizações Gráficas
-st.header("Outras Visualizações")
-st.write("Aqui você pode adicionar outras visualizações conforme necessário.")
-
-# Interatividade: filtragem de data
-date_range = st.slider("Selecione a faixa de datas", min_value=min(df['data_comentario']), max_value=max(df['data_comentario']), value=(min(df['data_comentario']), max(df['data_comentario'])))
-filtered_df = df[(df['data_comentario'] >= date_range[0]) & (df['data_comentario'] <= date_range[1])]
-
-st.write(filtered_df)
+with col3:
+    st.markdown("**Comentários Negativos**")
+    st.markdown(f"<h1 style='text-align: center; color: red;'>{neg_comments}</h1>", unsafe_allow_html=True)
+    st.markdown(f"Média de curtidas: {avg_likes_neg:.2f}")
+    st.markdown(f"Média de visualizações: {avg_views_neg:.2f}")
