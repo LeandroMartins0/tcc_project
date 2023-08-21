@@ -17,6 +17,9 @@ def load_data():
 
 df = load_data()
 
+st.write(df.head())
+
+
 # Título do Dashboard
 st.title("Dashboard de Análise de Sentimentos do Facebook")
 
