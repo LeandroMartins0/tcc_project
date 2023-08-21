@@ -1,8 +1,6 @@
 import streamlit as st
+import pandas as pd
 import analise_sentimentos
-import analise_engajamento
-import visualizacoes
-
 # Carregar dados
 df = pd.read_csv('dados_ficticios.csv', delimiter=',')
 
@@ -15,6 +13,8 @@ menu = st.sidebar.selectbox(
 if menu == "Análise de Sentimentos":
     analise_sentimentos.show(df)
 elif menu == "Análise de Engajamento":
-    analise_engajamento.show(df)
+    print(teste)
+    #analise_engajamento.show(df)
 elif menu == "Visualizações":
-    visualizacoes.show(df)
+    print(teste)
+    #visualizacoes.show(df)
