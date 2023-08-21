@@ -8,13 +8,26 @@ def show(df):
     Explore a distribuição e tendências dos sentimentos em comentários no Facebook.
     """)
     
+    # Descrição dos sentimentos
+    st.write("""
+    ### Entendendo os Sentimentos:
+    
+    - **Positivo**: Comentários que expressam uma avaliação ou reação favorável a postagens, sugerindo satisfação, alegria ou outros sentimentos benéficos.
+    
+    - **Neutro**: Comentários que não expressam sentimentos fortes ou claros em qualquer direção. Geralmente são observacionais, factuais ou não carregam um tom emocional evidente.
+    
+    - **Negativo**: Comentários que expressam desagrado, insatisfação, tristeza ou outros sentimentos indesejáveis.
+    
+    Estes sentimentos são inferidos automaticamente pela API do Facebook com base no conteúdo dos comentários.
+    """)
+
     # Espaçamento para melhor layout
     st.write('\n')
     
     # Big Numbers
     st.header("Visão Geral")
     
-    col1, col2, col3 = st.beta_columns(3)
+    col1, col2, col3 = st.columns(3)
     
     with col1:
         st.markdown("**Positivo**")
