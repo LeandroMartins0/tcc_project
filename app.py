@@ -64,7 +64,7 @@ st.header("Outras Visualizações")
 st.write("Aqui você pode adicionar outras visualizações conforme necessário.")
 
 # Interatividade: filtragem de data
-date_range = st.slider("Selecione a faixa de datas", min_value=min(df['data_comentario']), max_value=max(df['data_comentario']), value=(min(df['data_comentario']), max(df['data_comentario']))
+date_range = st.slider("Selecione a faixa de datas", min_value=min(df['data_comentario']), max_value=max(df['data_comentario']), value=(min(df['data_comentario']), max(df['data_comentario'])))
 filtered_df = df[(df['data_comentario'] >= date_range[0]) & (df['data_comentario'] <= date_range[1])]
 
 st.write(filtered_df)
