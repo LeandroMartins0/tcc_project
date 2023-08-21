@@ -7,8 +7,11 @@ import seaborn as sns
 # Carregando os dados
 @st.cache
 def load_data():
-    data = pd.read_csv('C:/Users/LeandroAugusto/Documents/TCC/Base/dados_ficticios.csv')
-    return data
+    try:
+        data = pd.read_csv('dados_ficticios.csv')
+        return data
+    except Exception as e:
+        st.error(f"Erro ao carregar os dados: {e}")
 
 df = load_data()
 
@@ -68,5 +71,3 @@ date_range = st.slider("Selecione a faixa de datas", min_value=min(df['data_come
 filtered_df = df[(df['data_comentario'] >= date_range[0]) & (df['data_comentario'] <= date_range[1])]
 
 st.write(filtered_df)
-
-# Aqui, você pode continuar adicionando mais funcionalidades, visualizações e análises.
