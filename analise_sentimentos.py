@@ -1,5 +1,7 @@
 import streamlit as st
 import pandas as pd
+import matplotlib.pyplot as plt
+
 
 def show(df):
     st.title("Análise de Sentimentos")
@@ -46,7 +48,7 @@ def show(df):
     
     # Gráficos (Aqui você pode adicionar gráficos para visualizar distribuição, tendências, etc.)
     st.header("Detalhes dos Sentimentos")
-    
+
     # Gráficos de barra mostrando a distribuição dos sentimentos
     st.subheader("Distribuição dos Sentimentos")
     sentiments = ['positivo', 'neutro', 'negativo']
