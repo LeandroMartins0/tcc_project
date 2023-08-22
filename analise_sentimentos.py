@@ -86,25 +86,41 @@ def show(df):
 
     top_posts = df.sort_values(by='curtidas', ascending=False).head(5)
 
+    # Estilo CSS para centralizar o conteúdo nas colunas
+    col_style = """
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 10px;
+    """
+
     for _, row in top_posts.iterrows():
         
-        st.write(f"**{row['postagem']}**")
+        st.markdown(f"### {row['postagem']}")  # Um tamanho de fonte um pouco maior para o título da postagem
         
         col1, col2, col3 = st.columns(3)
         
         with col1:
-            st.subheader("👍 Curtidas")
-            st.write(row['curtidas'])
+            st.markdown(f"<div style='{col_style}'>", unsafe_allow_html=True)
+            st.markdown("👍", unsafe_allow_html=True)
+            st.markdown(f"**Curtidas**<br>{row['curtidas']}", unsafe_allow_html=True)
+            st.markdown("</div>", unsafe_allow_html=True)
             
         with col2:
-            st.subheader("🔄 Compartilhamentos")
-            st.write(row['compartilhamentos'])
+            st.markdown(f"<div style='{col_style}'>", unsafe_allow_html=True)
+            st.markdown("🔄", unsafe_allow_html=True)
+            st.markdown(f"**Compartilhamentos**<br>{row['compartilhamentos']}", unsafe_allow_html=True)
+            st.markdown("</div>", unsafe_allow_html=True)
         
         with col3:
-            st.subheader("👁️ Visualizações")
-            st.write(row['visualizacoes'])
+            st.markdown(f"<div style='{col_style}'>", unsafe_allow_html=True)
+            st.markdown("👁️", unsafe_allow_html=True)
+            st.markdown(f"**Visualizações**<br>{row['visualizacoes']}", unsafe_allow_html=True)
+            st.markdown("</div>", unsafe_allow_html=True)
         
         st.write("---")  # Um separador para melhor visualização entre as postagens
+
 
 
     # Final do dashboard com um call-to-action ou uma nota.
