@@ -87,16 +87,17 @@ def show(df):
 
     for _, row in top_posts.iterrows():
         card_content = f"""
-        <div style="border: 1px solid #E0E0E0; border-radius: 5px; padding: 20px; margin-bottom: 20px;">
-            <h4 style="color: #333; margin-bottom: 20px;">{row['postagem']}</h4>
-            <div style="display: flex; justify-content: space-between;">
-                <div><strong>Curtidas:</strong> {row['curtidas']}</div>
-                <div><strong>Compartilhamentos:</strong> {row['compartilhamentos']}</div>
-                <div><strong>Visualizações:</strong> {row['visualizacoes']}</div>
+        <div style="border: 1px solid #E0E0E0; border-radius: 8px; padding: 20px; margin-bottom: 25px; background-color: #f8f8f8;">
+            <p style="color: #333; font-size: 18px; font-weight: bold; margin-bottom: 20px;">{row['postagem']}</p>
+            <div style="display: flex; justify-content: start; gap: 20px;">
+                <div style="flex: 1;"><span style="font-size: 24px; color: #3498db;">👍</span> <strong>Curtidas:</strong> {row['curtidas']}</div>
+                <div style="flex: 1;"><span style="font-size: 24px; color: #e74c3c;">🔄</span> <strong>Compartilhamentos:</strong> {row['compartilhamentos']}</div>
+                <div style="flex: 1;"><span style="font-size: 24px; color: #2ecc71;">👁️</span> <strong>Visualizações:</strong> {row['visualizacoes']}</div>
             </div>
         </div>
         """
         st.markdown(card_content, unsafe_allow_html=True)
+
 
     # Final do dashboard com um call-to-action ou uma nota.
     st.write("""
