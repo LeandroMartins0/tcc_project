@@ -83,20 +83,28 @@ def show(df):
     plt.clf()
 
     st.subheader("Top 5 postagens por curtidas")
+
     top_posts = df.sort_values(by='curtidas', ascending=False).head(5)
 
     for _, row in top_posts.iterrows():
-        card_content = f"""
-        <div style="border: 1px solid #E0E0E0; border-radius: 8px; padding: 20px; margin-bottom: 25px; background-color: #f8f8f8;">
-            <p style="color: #333; font-size: 18px; font-weight: bold; margin-bottom: 20px;">{row['postagem']}</p>
-            <div style="display: flex; justify-content: start; gap: 20px;">
-                <div style="flex: 1;"><span style="font-size: 24px; color: #3498db;">👍</span> <strong>Curtidas:</strong> {row['curtidas']}</div>
-                <div style="flex: 1;"><span style="font-size: 24px; color: #e74c3c;">🔄</span> <strong>Compartilhamentos:</strong> {row['compartilhamentos']}</div>
-                <div style="flex: 1;"><span style="font-size: 24px; color: #2ecc71;">👁️</span> <strong>Visualizações:</strong> {row['visualizacoes']}</div>
-            </div>
-        </div>
-        """
-        st.markdown(card_content, unsafe_allow_html=True)
+        
+        st.write(f"**{row['postagem']}**")
+        
+        col1, col2, col3 = st.columns(3)
+        
+        with col1:
+            st.subheader("👍 Curtidas")
+            st.write(row['curtidas'])
+            
+        with col2:
+            st.subheader("🔄 Compartilhamentos")
+            st.write(row['compartilhamentos'])
+        
+        with col3:
+            st.subheader("👁️ Visualizações")
+            st.write(row['visualizacoes'])
+        
+        st.write("---")  # Um separador para melhor visualização entre as postagens
 
 
     # Final do dashboard com um call-to-action ou uma nota.
