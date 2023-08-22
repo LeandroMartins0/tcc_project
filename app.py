@@ -41,6 +41,11 @@ if menu == "Análise de Sentimentos":
     selected_languages = st.sidebar.multiselect("Selecione as línguas", unique_languages, default=unique_languages)
     df = df[df['lingua'].isin(selected_languages)]
 
+    # Filtro por sentimentos
+    unique_sentiments = sorted(df['sentimento'].dropna().unique())
+    selected_sentiments = st.sidebar.multiselect("Selecione os sentimentos", unique_sentiments, default=unique_sentiments)
+    df = df[df['sentimento'].isin(selected_sentiments)]
+
     analise_sentimentos.show(df)
 elif menu == "Análise de Engajamento":
     print("teste")

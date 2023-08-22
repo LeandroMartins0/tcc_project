@@ -82,11 +82,21 @@ def show(df):
     st.pyplot(plt.gcf())
     plt.clf()
 
-    # Top postagens
     st.subheader("Top 5 postagens por curtidas")
     top_posts = df.sort_values(by='curtidas', ascending=False).head(5)
+
     for _, row in top_posts.iterrows():
-        st.write(f"**Postagem**: {row['postagem']} | **Curtidas**: {row['curtidas']} | **Compartilhamentos**: {row['compartilhamentos']} | **Visualizações**: {row['visualizacoes']}")
+        card_content = f"""
+        <div style="border: 1px solid #E0E0E0; border-radius: 5px; padding: 20px; margin-bottom: 20px;">
+            <h4 style="color: #333; margin-bottom: 20px;">{row['postagem']}</h4>
+            <div style="display: flex; justify-content: space-between;">
+                <div><strong>Curtidas:</strong> {row['curtidas']}</div>
+                <div><strong>Compartilhamentos:</strong> {row['compartilhamentos']}</div>
+                <div><strong>Visualizações:</strong> {row['visualizacoes']}</div>
+            </div>
+        </div>
+        """
+        st.markdown(card_content, unsafe_allow_html=True)
 
     # Final do dashboard com um call-to-action ou uma nota.
     st.write("""
