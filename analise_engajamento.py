@@ -12,6 +12,12 @@ def show(df):
     Explore os indicadores e métricas que refletem o engajamento com as postagens nas redes sociais.
     """)
 
+    # Convertendo a coluna 'data_postagem' para datetime
+    df['data_postagem'] = pd.to_datetime(df['data_postagem'], errors='coerce')
+    
+    # Removendo possíveis linhas com 'tipo_postagem' NaN
+    df.dropna(subset=['tipo_postagem'], inplace=True)
+
     # Visão Geral
     st.header("Visão Geral")
     col1, col2, col3, col4 = st.columns(4)
@@ -44,7 +50,6 @@ def show(df):
 
     # Engajamento ao longo do tempo
     st.subheader("Engajamento ao Longo do Tempo")
-    df['data_postagem'] = pd.to_datetime(df['data_postagem'])
     engagement_over_time = df.groupby(df['data_postagem'].dt.date).sum()[['curtidas', 'reacoes', 'compartilhamentos']]
     plt.figure(figsize=(10, 6))
     engagement_over_time.plot()
@@ -96,3 +101,4 @@ def show(df):
     ### Obrigado por explorar a análise de engajamento!
     Use estes insights para otimizar suas estratégias de postagem e melhorar o engajamento.
     """)
+
