@@ -13,7 +13,7 @@ menu = st.sidebar.selectbox(
     "Escolha uma análise", 
     ["Análise de Sentimentos", 
      "Análise de Engajamento", 
-     "Análise de Sentimentos Temporal", 
+     "Previsão de Engajamento", 
      "Visualizações"]
 )
 
@@ -35,8 +35,8 @@ if menu == "Análise de Sentimentos":
 elif menu == "Análise de Engajamento":
     analise_engajamento.show(df)
 
-elif menu == "Análise de Sentimentos Temporal":
-    analise_machine.show(df)    
+elif menu == "Previsão de Engajamento":
+    analise_machine.show(df)
 
 elif menu == "Visualizações":
     st.error("Em desenvolvimento")

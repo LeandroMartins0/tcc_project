@@ -6,48 +6,48 @@ import seaborn as sns
 sns.set_style("whitegrid")
 
 def show(df):
-    st.title("Análise de Sentimentos")
+    st.title("🧠 Análise de Sentimentos")
     
     st.write("""
-    Explore a distribuição e tendências dos sentimentos em comentários no Facebook.
+    Descubra a atmosfera e as tendências emocionais dos comentários nas redes sociais. Esta seção proporciona uma visão detalhada sobre o sentimento predominante em sua audiência.
     """)
 
     # Entendendo os Sentimentos
     st.write("""
-    ### Entendendo os Sentimentos:
+    ### 🔍 Entendendo os Sentimentos:
     
-    - **Positivo**: Comentários que expressam uma avaliação ou reação favorável a postagens, sugerindo satisfação, alegria ou outros sentimentos benéficos.
+    - **🟢 Positivo**: Comentários que exalam otimismo. Eles expressam satisfação, alegria ou outros sentimentos positivos.
     
-    - **Neutro**: Comentários que não expressam sentimentos fortes ou claros em qualquer direção. Geralmente são observacionais, factuais ou não carregam um tom emocional evidente.
+    - **🟡 Neutro**: Comentários equilibrados. Não tendem nem para o positivo, nem para o negativo. Pense neles como observações neutras.
     
-    - **Negativo**: Comentários que expressam desagrado, insatisfação, tristeza ou outros sentimentos indesejáveis.
+    - **🔴 Negativo**: Comentários que demonstram insatisfação ou desagrado. Eles podem indicar áreas que exigem sua atenção.
     
-    Estes sentimentos são inferidos automaticamente pela API do Facebook com base no conteúdo dos comentários.
+    Os sentimentos são determinados automaticamente pela API do Facebook com base no conteúdo dos comentários.
     """)
 
-    # Big Numbers
-    st.header("Visão Geral")
+    # Visão Geral dos Sentimentos
+    st.header("📊 Visão Geral dos Sentimentos")
     col1, col2, col3 = st.columns(3)
     
     with col1:
-        st.markdown("**Positivo**")
+        st.markdown("**🟢 Positivo**")
         st.markdown(f"<h1 style='text-align: center; color: green;'>{len(df[df['sentimento'] == 'positivo'])}</h1>", unsafe_allow_html=True)
         
     with col2:
-        st.markdown("**Neutro**")
+        st.markdown("**🟡 Neutro**")
         st.markdown(f"<h1 style='text-align: center; color: gray;'>{len(df[df['sentimento'] == 'neutro'])}</h1>", unsafe_allow_html=True)
     
     with col3:
-        st.markdown("**Negativo**")
+        st.markdown("**🔴 Negativo**")
         st.markdown(f"<h1 style='text-align: center; color: red;'>{len(df[df['sentimento'] == 'negativo'])}</h1>", unsafe_allow_html=True)
 
-    st.header("Detalhes dos Sentimentos")
+    st.header("📈 Detalhes dos Sentimentos")
 
     # Gráficos de barra mostrando a distribuição dos sentimentos
-    st.subheader("Distribuição dos Sentimentos")
+    st.subheader("📌 Distribuição dos Sentimentos")
     sentiments = df['sentimento'].value_counts()
     plt.figure(figsize=(10, 6))
-    sns.barplot(sentiments.index, sentiments.values, palette=["red", "gray", "green"])
+    sns.barplot(x=sentiments.index, y=sentiments.values, palette=["red", "gray", "green"])
     plt.title('Distribuição dos Sentimentos')
     plt.ylabel('Quantidade de Comentários')
     st.pyplot(plt.gcf())
@@ -60,11 +60,11 @@ def show(df):
     fig, ax = plt.subplots(figsize=(10, 6))
     sentiment_over_time.plot(ax=ax, color=['green', 'gray', 'red'])
     ax.set_ylabel('Quantidade')
-    ax.set_title('Evolução dos Sentimentos ao Longo do Tempo')
+    ax.set_title('📅 Evolução dos Sentimentos ao Longo do Tempo')
     st.pyplot(fig)
 
     # Reações e curtidas por sentimento
-    st.subheader("Reações e Curtidas por Sentimento")
+    st.subheader("👍 Reações e Curtidas por Sentimento")
     reactions_avg = df.groupby('sentimento')[['reacoes', 'curtidas']].mean()
     reactions_avg.plot(kind='bar', figsize=(10, 6), color=['blue', 'yellow'])
     plt.title('Reações e Curtidas por Sentimento')
@@ -73,20 +73,20 @@ def show(df):
     plt.clf()
 
     # Distribuição de postagens por tipo
-    st.subheader("Distribuição de Postagens por Tipo")
+    st.subheader("🔍 Distribuição de Postagens por Tipo")
     post_type_counts = df['tipo_postagem'].value_counts()
     plt.figure(figsize=(10, 6))
-    sns.barplot(post_type_counts.index, post_type_counts.values, palette="viridis")
+    sns.barplot(x=post_type_counts.index, y=post_type_counts.values, palette="viridis")
     plt.title('Distribuição de Postagens por Tipo')
     plt.ylabel('Número de Postagens')
     st.pyplot(plt.gcf())
     plt.clf()
 
-    st.subheader("Top 5 postagens por curtidas")
+    st.subheader("🏆 Top 5 postagens por curtidas")
 
     top_posts = df.sort_values(by='curtidas', ascending=False).head(5)
 
-    # Estilo CSS para centralizar o conteúdo nas colunas
+    # CSS style para centralizar o conteúdo nas colunas
     col_style = """
         display: flex;
         flex-direction: column;
@@ -97,7 +97,7 @@ def show(df):
 
     for _, row in top_posts.iterrows():
         
-        st.markdown(f"### {row['postagem']}")  # Um tamanho de fonte um pouco maior para o título da postagem
+        st.markdown(f"### {row['postagem']}")  # Tamanho de fonte um pouco maior para o título da postagem
         
         col1, col2, col3 = st.columns(3)
         
@@ -119,12 +119,11 @@ def show(df):
             st.markdown(f"**Visualizações**<br>{row['visualizacoes']}", unsafe_allow_html=True)
             st.markdown("</div>", unsafe_allow_html=True)
         
-        st.write("---")  # Um separador para melhor visualização entre as postagens
-
-
+        st.write("---")  # Separador para melhor visualização entre as postagens
 
     # Final do dashboard com um call-to-action ou uma nota.
     st.write("""
-    ### Obrigado por explorar a análise de sentimentos!
-    Mantenha-se atualizado e tome decisões baseadas em dados.
+    ### 🙏 Obrigado por explorar a análise de sentimentos!
+    Baseie suas decisões em insights e mantenha-se sempre atualizado.
     """)
+
