@@ -1,7 +1,7 @@
 import streamlit as st
 import analise_sentimentos
 import analise_engajamento
-import analise_sentimentos_temporal
+#import analise_sentimentos_temporal
 import filters
 import pandas as pd
 
