@@ -32,3 +32,20 @@ def apply_sentiment_filter(df):
     unique_sentiments = sorted(df['sentimento'].dropna().unique())
     selected_sentiments = st.sidebar.multiselect("Selecione os sentimentos", unique_sentiments, default=unique_sentiments)
     return df[df['sentimento'].isin(selected_sentiments)]
+
+def apply_post_filter1(df):
+    post_list = df['postagem'].unique().tolist()
+    
+    # Adicionando opção "Todos" à lista
+    post_options = ['Todos'] + post_list
+
+    # Usando multiselect
+    selected_posts = st.sidebar.multiselect("Selecione postagens", post_options, default='Todos')
+    
+    # Se "Todos" estiver selecionado ou nenhum outro, retorne o dataframe completo
+    if 'Todos' in selected_posts or not selected_posts:
+        return df
+    else:
+        return df[df['postagem'].isin(selected_posts)]
+
+
