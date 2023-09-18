@@ -1,7 +1,7 @@
 import streamlit as st
 import analise_sentimentos
 import analise_engajamento
-import analise_machine
+import analise_previsao
 import filters
 import pandas as pd
 
@@ -36,7 +36,7 @@ elif menu == "Análise de Engajamento":
     analise_engajamento.show(df)
 
 elif menu == "Previsão de Engajamento":
-    analise_machine.show(df)
+    analise_previsao.show(df)
 
 elif menu == "Visualizações":
     st.error("Em desenvolvimento")
