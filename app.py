@@ -42,6 +42,7 @@ elif menu == "Análise de Engajamento":
     df = filters.apply_post_type_filter(df)
     df = filters.apply_location_filter(df)
     df = filters.apply_language_filter(df)
+    df = filters.apply_post_filter(df)
     analise_engajamento.show(df)
 
 elif menu == "Previsão de Engajamento":
@@ -54,6 +55,7 @@ elif menu == "Análise de Clusterização":
     df = filters.apply_post_type_filter(df)
     df = filters.apply_location_filter(df)
     df = filters.apply_language_filter(df)
+    df = filters.apply_post_filter(df)
     analise_clusterizacao.show(df)    
 
 elif menu == "Teste":
