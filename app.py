@@ -3,6 +3,7 @@ import analise_sentimentos
 import analise_engajamento
 import analise_previsao
 import analise_clusterizacao
+import analise_topicos
 import filters
 import pandas as pd
 
@@ -19,6 +20,7 @@ menu = st.sidebar.selectbox(
      "Análise de Engajamento", 
      "Previsão de Engajamento", 
      "Análise de Clusterização",
+     "Análise de Tópicos",
      "Teste"]
 )
 
@@ -57,6 +59,11 @@ elif menu == "Análise de Clusterização":
     df = filters.apply_language_filter(df)
     df = filters.apply_post_filter(df)
     analise_clusterizacao.show(df)    
+
+elif menu == "Análise de Tópicos":
+    df = load_data()
+    analise_topicos.show_topic_analysis(df)
+    
 
 elif menu == "Teste":
     st.error("Em desenvolvimento")
