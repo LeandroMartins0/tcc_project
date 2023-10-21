@@ -6,6 +6,9 @@ import analise_clusterizacao
 import analise_topicos
 import filters
 import pandas as pd
+import nltk
+nltk.download('stopwords')
+
 
 # Função para carregar os dados
 def load_data():

@@ -3,9 +3,11 @@ import pandas as pd
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.decomposition import LatentDirichletAllocation as LDA
 from nltk.corpus import stopwords
-from wordcloud import WordCloud
 import seaborn as sns
 import matplotlib.pyplot as plt
+import nltk
+nltk.download('stopwords')
+from wordcloud import WordCloud
 
 sns.set_style("whitegrid")
 
