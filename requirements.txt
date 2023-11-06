@@ -5,3 +5,8 @@ seaborn
 scikit-learn
 nltk
 wordcloud
+textblob
+vaderSentiment
+spacy
+textacy
+plotly
