@@ -19,8 +19,8 @@ def load_data():
 st.sidebar.title("Análises de Redes Sociais")
 menu = st.sidebar.selectbox(
     "Escolha uma análise", 
-    ["Análise de Sentimentos (Facebook)",  # Renomeada
-     "Análise de Sentimentos (Personalizada)",  # Nova guia
+    ["Análise de Sentimentos Geral",  # Renomeada
+     "Análise de Sentimentos Marketing",  # Nova guia
      "Análise de Engajamento", 
      "Previsão de Engajamento", 
      "Análise de Clusterização",
@@ -30,7 +30,7 @@ menu = st.sidebar.selectbox(
 # Filtros globais para todos os módulos
 st.sidebar.subheader("Filtros")
 
-if menu == "Análise de Sentimentos (Facebook)":
+if menu == "Análise de Sentimentos Geral":
     df = load_data()
     df = filters.apply_date_filter(df)
     df = filters.apply_post_type_filter(df)
@@ -41,9 +41,15 @@ if menu == "Análise de Sentimentos (Facebook)":
     
     analise_sentimentos_facebook.show(df)
 
-elif menu == "Análise de Sentimentos (Personalizada)":
+elif menu == "Análise de Sentimentos Marketing":
     df = load_data()
-    # Adicione aqui os filtros específicos para a sua análise de sentimentos personalizada
+    df = filters.apply_date_filter(df)
+    df = filters.apply_post_type_filter(df)
+    df = filters.apply_location_filter(df)
+    df = filters.apply_language_filter(df)
+    df = filters.apply_sentiment_filter(df)
+    df = filters.apply_post_filter(df)
+    
     analise_sentimentos_personalizada.show(df)
 
 elif menu == "Análise de Engajamento":
