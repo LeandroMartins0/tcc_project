@@ -1,6 +1,8 @@
 import streamlit as st
 import pandas as pd
 from textblob import TextBlob
+import matplotlib.pyplot as plt
+import seaborn as sns
 
 # Função para calcular o sentimento do comentário
 def calculate_sentiment(text):
@@ -38,15 +40,15 @@ def show(data):
     with col1:
         st.markdown("**🟢 Positivo**")
         pos_count = (data['Classificação Sentimento'] == 'Positivo').sum()
-        st.markdown(f"<h1 style='text-align: center; color: green;'>{pos_count}</h1>", unsafe_allow_html=True)
+        st.markdown(f"<h1 style='text-align: center; color: #4CAF50;'>{pos_count}</h1>", unsafe_allow_html=True)
     with col2:
         st.markdown("**🟡 Neutro**")
         neut_count = (data['Classificação Sentimento'] == 'Neutro').sum()
-        st.markdown(f"<h1 style='text-align: center; color: gray;'>{neut_count}</h1>", unsafe_allow_html=True)
+        st.markdown(f"<h1 style='text-align: center; color: #999;'>{neut_count}</h1>", unsafe_allow_html=True)
     with col3:
         st.markdown("**🔴 Negativo**")
         neg_count = (data['Classificação Sentimento'] == 'Negativo').sum()
-        st.markdown(f"<h1 style='text-align: center; color: red;'>{neg_count}</h1>", unsafe_allow_html=True)
+        st.markdown(f"<h1 style='text-align: center; color: #F44336;'>{neg_count}</h1>", unsafe_allow_html=True)
 
     # Detalhes dos Sentimentos
     st.header("📈 Detalhes dos Sentimentos")
@@ -68,6 +70,38 @@ def show(data):
     top_negative_comments = data[data['Classificação Sentimento'] == 'Negativo'].nsmallest(5, 'Sentimento')['comentario']
     for comment in top_negative_comments:
         st.error(comment)
+
+    # Detalhes dos Sentimentos
+    st.header("📈 Detalhes dos Sentimentos")
+    
+    # Gráficos de barra mostrando a distribuição dos sentimentos
+    st.subheader("📌 Distribuição dos Sentimentos")
+    sentiments = data['Classificação Sentimento'].value_counts()
+    plt.figure(figsize=(10, 6))
+    sns.barplot(x=sentiments.index, y=sentiments.values, palette=["#F44336", "#999", "#4CAF50"])
+    plt.title('Distribuição dos Sentimentos')
+    plt.ylabel('Quantidade de Comentários')
+    st.pyplot(plt.gcf())
+    plt.clf()
+
+    # Evolução dos sentimentos ao longo do tempo
+    data['data_comentario'] = pd.to_datetime(data['data_comentario'])
+    sentiment_over_time = data.groupby([data['data_comentario'].dt.date, 'Classificação Sentimento']).size().unstack().fillna(0)
+    
+    fig, ax = plt.subplots(figsize=(10, 6))
+    sentiment_over_time.plot(ax=ax, color=['#4CAF50', '#999', '#F44336'])
+    ax.set_ylabel('Quantidade')
+    ax.set_title('📅 Evolução dos Sentimentos ao Longo do Tempo')
+    st.pyplot(fig)
+
+    # Reações e curtidas por sentimento
+    st.subheader("👍 Curtidas por Sentimento")
+    reactions_avg = data.groupby('Classificação Sentimento')[['curtidas']].mean()
+    reactions_avg.plot(kind='bar', figsize=(10, 6), color=['#2196F3'])
+    plt.title('Curtidas por Sentimento')
+    plt.ylabel('Média de Curtidas')
+    st.pyplot(plt.gcf())
+    plt.clf()
 
     # Recomendações Simples
     st.subheader("💡 Recomendações")
