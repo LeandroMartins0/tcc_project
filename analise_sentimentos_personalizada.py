@@ -4,15 +4,26 @@ from textblob import TextBlob
 import matplotlib.pyplot as plt
 import seaborn as sns
 
-# Função para calcular o sentimento do comentário
 def calculate_sentiment(text):
     sentiment = TextBlob(text).sentiment.polarity
-    if sentiment > 0:
-        return 'Positivo', sentiment
-    elif sentiment < 0:
+
+    # Palavras-chave para identificar comentários
+    negative_keywords = ['decepcionado', 'esperava mais', 'nada especial', 'infelizmente', 'não atendeu']
+    positive_keywords = ['fantástico', 'melhor compra', 'perfeito', 'recomendar', 'amo esses produtos']
+    neutral_keywords = ['talvez compre', 'preciso pensar', 'aguardar mais opiniões', 'sem expressão de sentimentos']
+
+    # Verifica se o comentário contém alguma das palavras-chave negativas
+    if any(keyword in text.lower() for keyword in negative_keywords) or sentiment < -0.05:
         return 'Negativo', sentiment
+    # Verifica se o comentário contém alguma das palavras-chave positivas
+    elif any(keyword in text.lower() for keyword in positive_keywords) or sentiment > 0.05:
+        return 'Positivo', sentiment
+    # Verifica se o comentário contém alguma das palavras-chave neutras
+    elif any(keyword in text.lower() for keyword in neutral_keywords) or (sentiment >= -0.05 and sentiment <= 0.05):
+        return 'Neutro', sentiment
     else:
         return 'Neutro', sentiment
+
 
 def show(data):
     st.title("🧠 Análise de Sentimentos")
@@ -73,35 +84,46 @@ def show(data):
 
     # Detalhes dos Sentimentos
     st.header("📈 Detalhes dos Sentimentos")
-    
-    # Gráficos de barra mostrando a distribuição dos sentimentos
+
+    # Gráficos de barra mostrando a distribuição dos sentimentos - Cores Corrigidas
     st.subheader("📌 Distribuição dos Sentimentos")
-    sentiments = data['Classificação Sentimento'].value_counts()
+    sentiments = data['Classificação Sentimento'].value_counts().reindex(["Positivo", "Neutro", "Negativo"])
     plt.figure(figsize=(10, 6))
-    sns.barplot(x=sentiments.index, y=sentiments.values, palette=["#F44336", "#999", "#4CAF50"])
+    sns.barplot(x=sentiments.index, y=sentiments.values, palette=["#4CAF50", "#999", "#F44336"])
     plt.title('Distribuição dos Sentimentos')
     plt.ylabel('Quantidade de Comentários')
     st.pyplot(plt.gcf())
     plt.clf()
 
-    # Evolução dos sentimentos ao longo do tempo
+    # Evolução dos sentimentos ao longo do tempo - Cores Corrigidas
     data['data_comentario'] = pd.to_datetime(data['data_comentario'])
     sentiment_over_time = data.groupby([data['data_comentario'].dt.date, 'Classificação Sentimento']).size().unstack().fillna(0)
-    
+
+    # Reordenando as colunas para corresponder à paleta de cores
+    sentiment_over_time = sentiment_over_time[['Positivo', 'Neutro', 'Negativo']]
+
     fig, ax = plt.subplots(figsize=(10, 6))
     sentiment_over_time.plot(ax=ax, color=['#4CAF50', '#999', '#F44336'])
     ax.set_ylabel('Quantidade')
     ax.set_title('📅 Evolução dos Sentimentos ao Longo do Tempo')
     st.pyplot(fig)
 
-    # Reações e curtidas por sentimento
-    st.subheader("👍 Curtidas por Sentimento")
-    reactions_avg = data.groupby('Classificação Sentimento')[['curtidas']].mean()
-    reactions_avg.plot(kind='bar', figsize=(10, 6), color=['#2196F3'])
-    plt.title('Curtidas por Sentimento')
-    plt.ylabel('Média de Curtidas')
+    st.header("🌟 Top 5 Postagens Mais Populares")
+    top_posts = data.groupby('postagem')['curtidas'].sum().nlargest(5)
+    top_posts.sort_values(inplace=True)  # Organizando para gráfico horizontal
+
+    plt.figure(figsize=(10, 6))
+    sns.barplot(x=top_posts.values, y=top_posts.index, palette="viridis")
+    plt.xlabel('Número de Curtidas')
+    plt.ylabel('Postagem')
+    plt.title('Top 5 Postagens Mais Curtidas')
+
     st.pyplot(plt.gcf())
-    plt.clf()
+
+    st.write("""
+    ### Por que essas Postagens são Populares?
+    As postagens mais populares geralmente têm conteúdo atraente, promoções, ou mensagens que ressoam fortemente com a audiência. Elas tendem a gerar mais interações, como curtidas, compartilhamentos e comentários, aumentando seu alcance e visibilidade.
+    """)
 
     # Recomendações Simples
     st.subheader("💡 Recomendações")
