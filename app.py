@@ -20,7 +20,7 @@ st.sidebar.title("Análises de Redes Sociais")
 menu = st.sidebar.selectbox(
     "Escolha uma análise", 
     [
-     "Análise de Sentimentos",  # Nova guia
+     "Análise de Sentimentos",
      "Análise de Engajamento", 
      "Previsão de Engajamento", 
      "Análise de Clusterização",
