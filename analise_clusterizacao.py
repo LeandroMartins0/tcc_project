@@ -106,8 +106,6 @@ def show(df):
     - **Engajamento Médio** pode representar postagens com engajamento moderado e sentimentos neutros.
     - **Engajamento Baixo** pode ser postagens com baixo engajamento e sentimentos negativos.
 
-    (Nota: As descrições acima são hipotéticas. Uma análise detalhada dos clusters reais é necessária para interpretar seu significado.)
-
     ### Como usamos esta informação?
 
     A identificação destes grupos nos permite entender melhor o comportamento e as preferências do nosso público. Podemos adaptar nosso conteúdo com base nisso ou identificar áreas que requerem mais atenção.
